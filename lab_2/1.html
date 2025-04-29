@@ -1,0 +1,747 @@
+<!doctype html>
+<html>
+  <head>
+    <title>LAB2</title>
+    <style>
+      form {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #f5f5f5;
+        border-radius: 5px;
+      }
+
+      label {
+        display: inline-block;
+        margin: 5px 10px 5px 0;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      select {
+        padding: 5px;
+        margin-right: 10px;
+      }
+
+      button {
+        padding: 8px 15px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      .button-group {
+        margin-top: 15px;
+      }
+
+      #apply-filter {
+        background-color: #4caf50;
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+
+      #apply-filter:hover {
+        background-color: #45a049;
+      }
+
+      #reset-filter {
+        background-color: #f44336;
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      #reset-filter:hover {
+        background-color: #d32f2f;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Linux Distributions Comparison</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="arch.html">My Favorite Linux Distribution 🤩</a></li>
+          <li><a href="table.html">Compare Distributions</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section>
+      <h2>Distributions Table</h2>
+
+      <form id="filter-form">
+        <h4>Filter Options</h4>
+        <label for="filter-name">Filter by Name:</label>
+        <input type="text" id="filter-name" />
+        <br />
+
+        <label for="filter-year-min">Filter by Release Year Min:</label>
+        <input type="number" id="filter-year-min" />
+        <label for="filter-year-max">Max:</label>
+        <input type="number" id="filter-year-max" />
+        <br />
+
+        <label for="filter-users-count-min">Filter by Users Count Min:</label>
+        <input type="number" id="filter-users-count-min" />
+        <label for="filter-users-count-max">Max:</label>
+        <input type="number" id="filter-users-count-max" />
+        <br />
+
+        <label for="filter-downloads-min">Filter by Daily Downloads Min:</label>
+        <input type="number" id="filter-downloads-min" />
+        <label for="filter-downloads-max">Max:</label>
+        <input type="number" id="filter-downloads-max" />
+        <br />
+
+        <div class="button-group">
+          <button type="button" id="apply-filter">Apply Filter</button>
+          <button type="button" id="reset-filter">Reset Filters</button>
+        </div>
+      </form>
+      <br />
+
+      <form id="sort-form">
+        <h4>Sorting Options</h4>
+        <label for="sort-1">Primary Sort By:</label>
+        <select id="sort-1" name="sort-1">
+          <option value="distribution">Distribution</option>
+          <option value="releaseYear">Release Year</option>
+          <option value="usersCount">Users Count</option>
+          <option value="dailyDownloads">Daily Downloads</option>
+        </select>
+        <label>
+          <input type="radio" name="sort-1-order" value="asc" checked />
+          Ascending
+        </label>
+        <label>
+          <input type="radio" name="sort-1-order" value="desc" /> Descending
+        </label>
+        <br />
+
+        <label for="sort-2">Secondary Sort By:</label>
+        <select id="sort-2" name="sort-2">
+          <option value="distribution">Distribution</option>
+          <option value="releaseYear">Release Year</option>
+          <option value="usersCount">Users Count</option>
+          <option value="dailyDownloads">Daily Downloads</option>
+        </select>
+        <label>
+          <input type="radio" name="sort-2-order" value="asc" checked />
+          Ascending
+        </label>
+        <label>
+          <input type="radio" name="sort-2-order" value="desc" /> Descending
+        </label>
+        <br />
+
+        <label for="sort-3">Tertiary Sort By:</label>
+        <select id="sort-3" name="sort-3">
+          <option value="distribution">Distribution</option>
+          <option value="releaseYear">Release Year</option>
+          <option value="usersCount">Users Count</option>
+          <option value="dailyDownloads">Daily Downloads</option>
+        </select>
+        <label>
+          <input type="radio" name="sort-3-order" value="asc" checked />
+          Ascending
+        </label>
+        <label>
+          <input type="radio" name="sort-3-order" value="desc" /> Descending
+        </label>
+      </form>
+      <br />
+
+      <form id="chart-form">
+        <h4>Chart</h4>
+        <label for="x-axis">Select X-Axis:</label>
+        <select id="x-axis" name="x-axis">
+          <option value="distribution">Distribution</option>
+          <option value="packetManager">Packet Manager</option>
+        </select>
+        <br />
+
+        <label for="y-axis">Select Y-Axis:</label>
+        <select id="y-axis" name="y-axis">
+          <option value="usersCount">Users Count</option>
+          <option value="dailyDownloads">Daily Downloads</option>
+        </select>
+        <br />
+
+        <button type="submit">Generate Chart</button>
+      </form>
+      <br />
+
+      <table border="1">
+        <h4>Table</h4>
+        <thead>
+          <tr>
+            <th>Distribution</th>
+            <th>Release Year</th>
+            <th>Users Count</th>
+            <th>Daily Downloads</th>
+            <th>Packet Manager</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <script>
+        let originalData = [
+          {
+            distribution: "Arch Linux",
+            releaseYear: 2002,
+            usersCount: 1000000,
+            dailyDownloads: 5000,
+            packetManager: "Pacman",
+          },
+          {
+            distribution: "Ubuntu",
+            releaseYear: 2004,
+            usersCount: 50000000,
+            dailyDownloads: 30000,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "Fedora",
+            releaseYear: 2003,
+            usersCount: 1500000,
+            dailyDownloads: 7000,
+            packetManager: "DNF",
+          },
+          {
+            distribution: "Debian",
+            releaseYear: 1993,
+            usersCount: 1000000,
+            dailyDownloads: 4000,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "OpenSUSE",
+            releaseYear: 2005,
+            usersCount: 1000000,
+            dailyDownloads: 3000,
+            packetManager: "Zypper",
+          },
+          {
+            distribution: "Linux Mint",
+            releaseYear: 2006,
+            usersCount: 2000000,
+            dailyDownloads: 10000,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "Manjaro",
+            releaseYear: 2011,
+            usersCount: 1000000,
+            dailyDownloads: 5500,
+            packetManager: "Pacman",
+          },
+          {
+            distribution: "Pop!_OS",
+            releaseYear: 2017,
+            usersCount: 1000000,
+            dailyDownloads: 8000,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "Elementary OS",
+            releaseYear: 2011,
+            usersCount: 1200000,
+            dailyDownloads: 6500,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "CentOS",
+            releaseYear: 2004,
+            usersCount: 2000000,
+            dailyDownloads: 2500,
+            packetManager: "YUM/DNF",
+          },
+          {
+            distribution: "Alpine Linux",
+            releaseYear: 2005,
+            usersCount: 500000,
+            dailyDownloads: 1000,
+            packetManager: "APK",
+          },
+          {
+            distribution: "Gentoo",
+            releaseYear: 2002,
+            usersCount: 400000,
+            dailyDownloads: 1200,
+            packetManager: "Portage",
+          },
+          {
+            distribution: "Slackware",
+            releaseYear: 1993,
+            usersCount: 100000,
+            dailyDownloads: 500,
+            packetManager: "pkgtool",
+          },
+          {
+            distribution: "Puppy Linux",
+            releaseYear: 2003,
+            usersCount: 700000,
+            dailyDownloads: 2000,
+            packetManager: "PPM",
+          },
+          {
+            distribution: "Void Linux",
+            releaseYear: 2014,
+            usersCount: 200000,
+            dailyDownloads: 800,
+            packetManager: "X Binary",
+          },
+          {
+            distribution: "Solus",
+            releaseYear: 2015,
+            usersCount: 500000,
+            dailyDownloads: 1500,
+            packetManager: "eopkg",
+          },
+          {
+            distribution: "Tails",
+            releaseYear: 2012,
+            usersCount: 300000,
+            dailyDownloads: 900,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "Clear Linux",
+            releaseYear: 2016,
+            usersCount: 150000,
+            dailyDownloads: 400,
+            packetManager: "swupd",
+          },
+          {
+            distribution: "Zorin OS",
+            releaseYear: 2008,
+            usersCount: 1000000,
+            dailyDownloads: 5000,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "MX Linux",
+            releaseYear: 2018,
+            usersCount: 2500000,
+            dailyDownloads: 15000,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "Artix Linux",
+            releaseYear: 2018,
+            usersCount: 200000,
+            dailyDownloads: 600,
+            packetManager: "Pacman",
+          },
+          {
+            distribution: "Deepin",
+            releaseYear: 2004,
+            usersCount: 1000000,
+            dailyDownloads: 3500,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "Feren OS",
+            releaseYear: 2016,
+            usersCount: 300000,
+            dailyDownloads: 800,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "Raspberry Pi OS",
+            releaseYear: 2012,
+            usersCount: 1500000,
+            dailyDownloads: 7500,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "Kali Linux",
+            releaseYear: 2013,
+            usersCount: 1000000,
+            dailyDownloads: 4500,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "Parrot Security OS",
+            releaseYear: 2013,
+            usersCount: 300000,
+            dailyDownloads: 1000,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "ArchLabs",
+            releaseYear: 2018,
+            usersCount: 100000,
+            dailyDownloads: 300,
+            packetManager: "Pacman",
+          },
+          {
+            distribution: "BlackArch",
+            releaseYear: 2013,
+            usersCount: 250000,
+            dailyDownloads: 600,
+            packetManager: "Pacman",
+          },
+          {
+            distribution: "Qubes OS",
+            releaseYear: 2014,
+            usersCount: 150000,
+            dailyDownloads: 400,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "Sabayon Linux",
+            releaseYear: 2006,
+            usersCount: 50000,
+            dailyDownloads: 200,
+            packetManager: "Entropy",
+          },
+          {
+            distribution: "Devuan",
+            releaseYear: 2014,
+            usersCount: 100000,
+            dailyDownloads: 300,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "Neon",
+            releaseYear: 2016,
+            usersCount: 500000,
+            dailyDownloads: 2000,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "PureOS",
+            releaseYear: 2017,
+            usersCount: 100000,
+            dailyDownloads: 250,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "Linux Lite",
+            releaseYear: 2012,
+            usersCount: 500000,
+            dailyDownloads: 1800,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "SolydXK",
+            releaseYear: 2013,
+            usersCount: 30000,
+            dailyDownloads: 100,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "Calculate Linux",
+            releaseYear: 2007,
+            usersCount: 20000,
+            dailyDownloads: 80,
+            packetManager: "Portage",
+          },
+          {
+            distribution: "PCLinuxOS",
+            releaseYear: 2007,
+            usersCount: 150000,
+            dailyDownloads: 500,
+            packetManager: "APT",
+          },
+          {
+            distribution: "AntiX",
+            releaseYear: 2007,
+            usersCount: 200000,
+            dailyDownloads: 700,
+            packetManager: "APT",
+          },
+          {
+            distribution: "AlmaLinux",
+            releaseYear: 2021,
+            usersCount: 200000,
+            dailyDownloads: 900,
+            packetManager: "DNF",
+          },
+          {
+            distribution: "Rocky Linux",
+            releaseYear: 2021,
+            usersCount: 100000,
+            dailyDownloads: 400,
+            packetManager: "DNF",
+          },
+          {
+            distribution: "Neon",
+            releaseYear: 2016,
+            usersCount: 500000,
+            dailyDownloads: 2000,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "PureOS",
+            releaseYear: 2017,
+            usersCount: 100000,
+            dailyDownloads: 250,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "Linux Lite",
+            releaseYear: 2012,
+            usersCount: 500000,
+            dailyDownloads: 1800,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "SolydXK",
+            releaseYear: 2013,
+            usersCount: 30000,
+            dailyDownloads: 100,
+            packetManager: "Apt",
+          },
+          {
+            distribution: "Calculate Linux",
+            releaseYear: 2007,
+            usersCount: 20000,
+            dailyDownloads: 80,
+            packetManager: "Portage",
+          },
+          {
+            distribution: "PCLinuxOS",
+            releaseYear: 2007,
+            usersCount: 150000,
+            dailyDownloads: 500,
+            packetManager: "APT",
+          },
+          {
+            distribution: "AntiX",
+            releaseYear: 2007,
+            usersCount: 200000,
+            dailyDownloads: 700,
+            packetManager: "APT",
+          },
+          {
+            distribution: "AlmaLinux",
+            releaseYear: 2021,
+            usersCount: 200000,
+            dailyDownloads: 900,
+            packetManager: "DNF",
+          },
+          {
+            distribution: "Rocky Linux",
+            releaseYear: 2021,
+            usersCount: 100000,
+            dailyDownloads: 400,
+            packetManager: "DNF",
+          },
+          {
+            distribution: "Rocky Linux",
+            releaseYear: 2020,
+            usersCount: 100000,
+            dailyDownloads: 400,
+            packetManager: "DNF",
+          },
+        ];
+
+        function initializeTable() {
+          updateTable(originalData);
+        }
+
+        function updateTable(data) {
+          const tableBody = document.querySelector("table tbody");
+          tableBody.innerHTML = "";
+
+          data.forEach((item) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+            <td>${item.distribution}</td>
+            <td>${item.releaseYear}</td>
+            <td>${item.usersCount.toLocaleString()}</td>
+            <td>${item.dailyDownloads.toLocaleString()}</td>
+            <td>${item.packetManager}</td>
+          `;
+            tableBody.appendChild(row);
+          });
+        }
+
+        function applyFilters() {
+          const nameFilter = document
+            .getElementById("filter-name")
+            .value.toLowerCase();
+          const yearMin =
+            parseInt(document.getElementById("filter-year-min").value) || 0;
+          const yearMax =
+            parseInt(document.getElementById("filter-year-max").value) ||
+            Infinity;
+          const usersMin =
+            parseInt(document.getElementById("filter-users-count-min").value) ||
+            0;
+          const usersMax =
+            parseInt(document.getElementById("filter-users-count-max").value) ||
+            Infinity;
+          const downloadsMin =
+            parseInt(document.getElementById("filter-downloads-min").value) ||
+            0;
+          const downloadsMax =
+            parseInt(document.getElementById("filter-downloads-max").value) ||
+            Infinity;
+
+          return originalData.filter((item) => {
+            return (
+              item.distribution.toLowerCase().includes(nameFilter) &&
+              item.releaseYear >= yearMin &&
+              item.releaseYear <= yearMax &&
+              item.usersCount >= usersMin &&
+              item.usersCount <= usersMax &&
+              item.dailyDownloads >= downloadsMin &&
+              item.dailyDownloads <= downloadsMax
+            );
+          });
+        }
+
+        function applySorting(data) {
+          const sort1 = document.getElementById("sort-1").value;
+          const sort1Order = document.querySelector(
+            'input[name="sort-1-order"]:checked',
+          ).value;
+          const sort2 = document.getElementById("sort-2").value;
+          const sort2Order = document.querySelector(
+            'input[name="sort-2-order"]:checked',
+          ).value;
+          const sort3 = document.getElementById("sort-3").value;
+          const sort3Order = document.querySelector(
+            'input[name="sort-3-order"]:checked',
+          ).value;
+
+          return data.sort((a, b) => {
+            let result = compareValues(a[sort1], b[sort1], sort1Order);
+            if (result !== 0) return result;
+
+            result = compareValues(a[sort2], b[sort2], sort2Order);
+            if (result !== 0) return result;
+
+            return compareValues(a[sort3], b[sort3], sort3Order);
+          });
+        }
+
+        function compareValues(a, b, order) {
+          if (a < b) return order === "asc" ? -1 : 1;
+          if (a > b) return order === "asc" ? 1 : -1;
+          return 0;
+        }
+
+        function updateSortOptions() {
+          const sort1 = document.getElementById("sort-1");
+          const sort2 = document.getElementById("sort-2");
+          const sort3 = document.getElementById("sort-3");
+
+          const selected1 = sort1.value;
+          const selected2 = sort2.value;
+          const selected3 = sort3.value;
+
+          Array.from(sort2.options).forEach((opt) => (opt.style.display = ""));
+          Array.from(sort3.options).forEach((opt) => (opt.style.display = ""));
+
+          if (selected1) {
+            sort2.querySelector(`option[value="${selected1}"]`).style.display =
+              "none";
+            sort3.querySelector(`option[value="${selected1}"]`).style.display =
+              "none";
+          }
+          if (selected2) {
+            sort3.querySelector(`option[value="${selected2}"]`).style.display =
+              "none";
+          }
+        }
+
+        function resetFilters() {
+          document.getElementById("filter-name").value = "";
+          document.getElementById("filter-year-min").value = "";
+          document.getElementById("filter-year-max").value = "";
+          document.getElementById("filter-users-count-min").value = "";
+          document.getElementById("filter-users-count-max").value = "";
+          document.getElementById("filter-downloads-min").value = "";
+          document.getElementById("filter-downloads-max").value = "";
+
+          updateTable(originalData);
+        }
+
+        function applyFiltersAndSorting() {
+          const filteredData = applyFilters();
+          const sortedData = applySorting(filteredData);
+          updateTable(sortedData);
+        }
+
+        function generateChart(e) {
+          e.preventDefault();
+          const xAxis = document.getElementById("x-axis").value;
+          const yAxis = document.getElementById("y-axis").value;
+
+          const currentData = applySorting(applyFilters());
+
+          let chartData = "Chart Data:\n\n";
+          currentData.forEach((item) => {
+            chartData += `${item[xAxis]}: ${item[yAxis]}\n`;
+          });
+
+          alert(chartData);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+          initializeTable();
+          updateSortOptions();
+
+          document
+            .getElementById("apply-filter")
+            .addEventListener("click", applyFiltersAndSorting);
+          document
+            .getElementById("reset-filter")
+            .addEventListener("click", resetFilters);
+
+          document.querySelectorAll('select[id^="sort-"]').forEach((select) => {
+            select.addEventListener("change", function () {
+              updateSortOptions();
+              applyFiltersAndSorting();
+            });
+          });
+
+          document
+            .querySelectorAll('input[name$="-order"]')
+            .forEach((radio) => {
+              radio.addEventListener("change", applyFiltersAndSorting);
+            });
+
+          document
+            .getElementById("chart-form")
+            .addEventListener("submit", generateChart);
+        });
+      </script>
+    </section>
+  </body>
+</html>

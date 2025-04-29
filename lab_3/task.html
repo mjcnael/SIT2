@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Языки программирования</title>
+  </head>
+  <body>
+    <h1>История создания языков программирования</h1>
+    <button onclick="extractLanguages()">Извлечь языки</button>
+    <div class="content">
+      <p>
+        Python разработан в 1989-1991 годах голландским программистом Гвидо ван
+        Россумом
+      </p>
+      <p>C разработан в 1969-1973 годах сотрудником Bell Labs Деннисом Ричи</p>
+      <p>
+        Java разработан в 1990-1996 годах канадским программистом Джеймсом
+        Гослингом
+      </p>
+      <p>
+        JavaScript разработан в 1996 году, автор американский программист
+        Брендан Эйх
+      </p>
+      <p>
+        Prolog разработан в 1972 году, автор французский программист Ален
+        Колмерауэр
+      </p>
+      <p>
+        Ruby разработан в 1993-1995 годах, автор японский программист Юкихиро
+        Мацумото
+      </p>
+      <p>
+        C разработан в 1993-1995 годах, автор японский программист Юкихиро
+        Мацумото
+      </p>
+    </div>
+    <h2>История создания по годам</h2>
+    <script>
+      function extractLanguages() {
+        var paragraphs = document.querySelectorAll(".content p");
+        var languages = [];
+
+        paragraphs.forEach(function (paragraph) {
+          var text = paragraph.textContent.trim();
+          var language = text.split(" ")[0];
+          languages.push(language);
+        });
+
+        var paragraph = document.createElement("p");
+        paragraph.textContent = languages.join(" ");
+
+        var heading = document.querySelector("h2");
+        heading.parentNode.insertBefore(paragraph, heading);
+
+        document.querySelector("button").disabled = true;
+      }
+    </script>
+  </body>
+</html>

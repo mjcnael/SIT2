@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Трансформация и анимация</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="http://d3js.org/d3.v7.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/image.js"></script>
+    <script src="js/path.js"></script>
+  </head>
+  <body>
+    <form id="setting">
+      <p>
+        Начальные координаты<br />
+        <label for="cx">x: </label>
+        <input type="number" id="cx" value="100" max="600" min="0" /><br />
+        <label for="cy">y: </label>
+        <input type="number" id="cy" value="100" max="600" min="0" />
+      </p>
+      <p>
+        Конечные координаты<br />
+        <label for="cx_finish">x: </label>
+        <input
+          type="number"
+          id="cx_finish"
+          value="400"
+          max="600"
+          min="0"
+        /><br />
+        <label for="cy_finish">y: </label>
+        <input type="number" id="cy_finish" value="400" max="600" min="0" />
+      </p>
+      <p>
+        Масштабирование<br />
+        <label for="scaleX">scaleX: </label>
+        <input type="number" id="scaleX" value="1" step="0.1" /><br />
+        <label for="scaleY">scaleY: </label>
+        <input type="number" id="scaleY" value="1" step="0.1" />
+      </p>
+      <p>
+        <label for="rotation">Поворот (градусы): </label>
+        <input type="number" id="rotation" value="0" />
+      </p>
+      <p>
+        <label for="animation">Включить анимацию?</label>
+        <input type="checkbox" id="animation" />
+      </p>
+      <div id="animation-controls" style="display: none">
+        <p>
+          <label for="easing">Способ анимации:</label>
+          <select id="easing">
+            <option value="linear">Linear</option>
+            <option value="elastic">Elastic</option>
+            <option value="bounce" selected>Bounce</option>
+          </select>
+        </p>
+      </div>
+      <p>
+        <input type="button" id="drawBtn" value="Нарисовать" />
+        <input
+          type="button"
+          id="animateBtn"
+          value="Анимировать"
+          style="display: none"
+        />
+        <input type="button" id="clearBtn" value="Очистить" />
+      </p>
+      <p>
+        <label for="path-movement">Перемещение вдоль пути:</label>
+        <input type="checkbox" id="path-movement" />
+      </p>
+      <div id="path-controls" style="display: none">
+        <p>
+          <label for="path-type">Тип пути:</label>
+          <select id="path-type">
+            <option value="0">Путь "Г"</option>
+            <option value="1">Круг</option>
+          </select>
+        </p>
+      </div>
+    </form>
+    <svg></svg>
+  </body>
+</html>

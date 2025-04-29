@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LAB3</title>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <style>
+      body {
+        font-family: Source Code Pro;
+        margin: 20px;
+        color: #444444;
+      }
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      #svg-container {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+      .control-panel {
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      input[type="number"] {
+        width: 80px;
+        padding: 5px;
+      }
+      select {
+        width: 120px;
+        padding: 5px;
+      }
+      button {
+        padding: 8px 15px;
+        margin-right: 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      button#clear {
+        background-color: #f44336;
+      }
+      button#clear:hover {
+        background-color: #d32f2f;
+      }
+      .path {
+        fill: none;
+        stroke: #888;
+        stroke-width: 2;
+        stroke-dasharray: 5, 5;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>LAB3</h1>
+
+    <div class="container">
+      <div>
+        <div id="svg-container"></div>
+      </div>
+
+      <div class="control-panel">
+        <h2>Options</h2>
+
+        <div class="form-group">
+          <label for="animation-speed">Animation speed (ms):</label>
+          <input type="number" id="animation-speed" value="2000" />
+        </div>
+
+        <div class="form-group">
+          <label for="scale-factor">Scale factor:</label>
+          <input
+            type="number"
+            id="scale-factor"
+            min="0.1"
+            max="2"
+            step="0.1"
+            value="1.5"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="rotation-angle">Rotation angle (deg):</label>
+          <input
+            type="number"
+            id="rotation-angle"
+            min="0"
+            max="360"
+            value="180"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="animation-type">Animation type:</label>
+          <select id="animation-type">
+            <option value="linear">Linear</option>
+            <option value="bounce">Bounce</option>
+            <option value="elastic">Elastic</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <button id="start">Start</button>
+          <button id="clear">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const width = 600;
+      const height = 600;
+      const padding = 100;
+
+      const svg = d3
+        .select("#svg-container")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+      const pathData = [
+        { x: padding, y: padding },
+        { x: width - padding, y: padding },
+        { x: width - padding, y: height - padding },
+        { x: padding, y: height - padding },
+        { x: padding, y: padding },
+      ];
+
+      const pathLine = d3
+        .line()
+        .x((d) => d.x)
+        .y((d) => d.y);
+
+      svg
+        .append("path")
+        .datum(pathData)
+        .attr("class", "path")
+        .attr("d", pathLine);
+
+      const group = svg
+        .append("g")
+        .attr("transform", `translate(${padding}, ${padding})`);
+
+      function createShip(g) {
+        g.append("polygon")
+          .attr("points", "0,0 30,0 40,-15 -10,-15")
+          .attr("fill", "#6495ED");
+
+        g.append("rect")
+          .attr("x", 5)
+          .attr("y", -25)
+          .attr("width", 20)
+          .attr("height", 10)
+          .attr("fill", "#4682B4");
+
+        g.append("rect")
+          .attr("x", 15)
+          .attr("y", -50)
+          .attr("width", 2)
+          .attr("height", 35)
+          .attr("fill", "#8B4513");
+
+        g.append("polygon")
+          .attr("points", "17,-45 17,-20 35,-30")
+          .attr("fill", "#FFFFFF")
+          .attr("stroke", "#000")
+          .attr("stroke-width", 1);
+
+        g.append("circle")
+          .attr("cx", 20)
+          .attr("cy", -7)
+          .attr("r", 3)
+          .attr("fill", "#FFD700");
+
+        g.append("polygon")
+          .attr("points", "60,-7 80,-2 60,3")
+          .attr("fill", "#FF0000");
+
+        g.append("rect")
+          .attr("x", 40)
+          .attr("y", -3)
+          .attr("width", 20)
+          .attr("height", 2)
+          .attr("fill", "#FF0000");
+      }
+
+      createShip(group);
+
+      let animation = null;
+      let currentStep = 0;
+
+      document
+        .getElementById("start")
+        .addEventListener("click", startAnimation);
+
+      document.getElementById("clear").addEventListener("click", function () {
+        stopAnimation();
+        currentStep = 0;
+        group.attr(
+          "transform",
+          `translate(${padding}, ${padding}) scale(1) rotate(0)`,
+        );
+      });
+
+      const easingFunctions = {
+        linear: function (t) {
+          return t;
+        },
+        bounce: function (t) {
+          const b = 0.75;
+          if (t < 1 / 2.75) {
+            return 7.5625 * t * t;
+          } else if (t < 2 / 2.75) {
+            return 7.5625 * (t -= 1.5 / 2.75) * t + 0.75;
+          } else if (t < 2.5 / 2.75) {
+            return 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375;
+          } else {
+            return 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
+          }
+        },
+        elastic: function (t) {
+          return (
+            Math.pow(2, -10 * t) *
+              Math.sin(((t - 0.075) * (2 * Math.PI)) / 0.3) +
+            1
+          );
+        },
+        cubic: function (t) {
+          return t < 0.5
+            ? 4 * t * t * t
+            : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+        },
+      };
+
+      function startAnimation() {
+        stopAnimation();
+        currentStep = 0;
+        animateToNextPoint(false);
+      }
+
+      function animateToNextPoint(resuming = false) {
+        if (currentStep >= pathData.length - 1) {
+          currentStep = 0;
+        }
+
+        const from = pathData[currentStep];
+        const to = pathData[(currentStep + 1) % pathData.length];
+
+        let angle = Math.atan2(to.y - from.y, to.x - from.x) * (180 / Math.PI);
+
+        const speed = parseInt(
+          document.getElementById("animation-speed").value,
+        );
+        const scaleFactor = parseFloat(
+          document.getElementById("scale-factor").value,
+        );
+        const rotationAngle = parseInt(
+          document.getElementById("rotation-angle").value,
+        );
+        const animationType = document.getElementById("animation-type").value;
+        const easingFunction = easingFunctions[animationType];
+
+        group
+          .transition()
+          .duration(speed)
+          .attrTween("transform", function () {
+            return function (t) {
+              const easedT = easingFunction(t);
+
+              const x = from.x + (to.x - from.x) * easedT;
+              const y = from.y + (to.y - from.y) * easedT;
+
+              let scale;
+              if (animationType === "bounce") {
+                scale =
+                  1 + (1 - Math.abs(easedT * 2 - 1)) * (scaleFactor - 1) * 0.5;
+              } else if (animationType === "elastic") {
+                const progress =
+                  Math.pow(2, -10 * t) *
+                  Math.sin(((t - 0.075) * (2 * Math.PI)) / 0.3);
+                scale = 1 + Math.abs(progress) * (scaleFactor - 1) * 0.3;
+              } else {
+                scale =
+                  1 + Math.sin(easedT * Math.PI) * (scaleFactor - 1) * 0.5;
+              }
+
+              const rotate = angle + easedT * rotationAngle;
+
+              return `translate(${x}, ${y}) scale(${scale}) rotate(${rotate})`;
+            };
+          })
+          .on("end", function () {
+            currentStep = (currentStep + 1) % (pathData.length - 1);
+            animateToNextPoint();
+          });
+      }
+
+      function stopAnimation() {
+        group.interrupt();
+      }
+    </script>
+  </body>
+</html>

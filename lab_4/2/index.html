@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>LAB4</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="http://d3js.org/d3.v7.min.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/table.js"></script>
+    <script src="js/chart.js"></script>
+  </head>
+  <body>
+    <h3>Список самых высоких зданий</h3>
+
+    <div class="chart-controls">
+      <form id="chart-settings">
+        <div class="form-group">
+          <label>Ось OX:</label>
+          <div>
+            <input
+              type="radio"
+              id="x-country"
+              name="x-axis"
+              value="Страна"
+              checked
+            />
+            <label for="x-country">Страна</label>
+          </div>
+          <div>
+            <input type="radio" id="x-year" name="x-axis" value="Год" />
+            <label for="x-year">Год</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Ось OY:</label>
+          <div>
+            <input
+              type="checkbox"
+              id="y-min"
+              name="y-axis"
+              value="min"
+              checked
+            />
+            <label for="y-min">Минимальная высота</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="y-max"
+              name="y-axis"
+              value="max"
+              checked
+            />
+            <label for="y-max">Максимальная высота</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="chart-type">Тип диаграммы:</label>
+          <select id="chart-type" name="chart-type">
+            <option value="scatter">Точечная</option>
+            <option value="bar">Гистограмма</option>
+          </select>
+        </div>
+
+        <button type="button" id="draw-chart">Построить график</button>
+        <div id="error-message" class="error"></div>
+      </form>
+    </div>
+    <svg></svg>
+    <button id="toggle-table">Скрыть таблицу</button>
+    <table id="buildings-table"></table>
+  </body>
+</html>

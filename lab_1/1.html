@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Калькулятор характеристик ромба</title>
+    <style>
+      body {
+        font-family: Source Code Pro;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+      }
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+      }
+      .container {
+        display: flex;
+        gap: 20px;
+      }
+      .results-column {
+        flex: 1;
+      }
+      .calculator-column {
+        flex: 1;
+      }
+      .calculator {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .input-section {
+        margin-bottom: 20px;
+      }
+      .input-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      input,
+      select,
+      button {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      button {
+        background-color: orange;
+        color: white;
+        cursor: pointer;
+        border: none;
+        margin-right: 10px;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        background-color: #2980b9;
+      }
+      .buttons {
+        margin-top: 20px;
+      }
+      .image-container {
+        text-align: center;
+        margin: 20px 0;
+      }
+      .image-container img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+      }
+      .results {
+        background-color: #e8f4f8;
+        min-height: 200px;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .error {
+        color: #e74c3c;
+        font-size: 14px;
+        margin-top: 5px;
+        display: none;
+      }
+      .error-input {
+        border-color: #e74c3c;
+      }
+      .radio-group {
+        margin-bottom: 10px;
+      }
+      .radio-option {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+      .radio-option input {
+        margin-right: 8px;
+      }
+      .checkbox-option {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+      .checkbox-option input {
+        margin-right: 8px;
+      }
+      .result-item {
+        margin-bottom: 8px;
+        padding: 8px;
+        background-color: white;
+        border-radius: 4px;
+      }
+      .result-title {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Калькулятор характеристик ромба</h1>
+
+    <div class="container">
+      <div class="results-column">
+        <div id="results" class="results">
+          <label>Результаты вычислений</label>
+        </div>
+      </div>
+
+      <div class="calculator-column">
+        <div class="calculator">
+          <div class="input-section">
+            <div class="input-group">
+              <label>Тип входных данных:</label>
+              <div class="radio-group">
+                <div class="radio-option">
+                  <input
+                    type="radio"
+                    id="diagonals-radio"
+                    name="input-type"
+                    value="diagonals"
+                    checked
+                  />
+                  <label for="diagonals-radio">Диагонали</label>
+                </div>
+                <div class="radio-option">
+                  <input
+                    type="radio"
+                    id="side-angle-radio"
+                    name="input-type"
+                    value="side-angle"
+                  />
+                  <label for="side-angle-radio">Сторона и угол</label>
+                </div>
+              </div>
+              <button id="show-btn">Показать</button>
+            </div>
+
+            <div class="image-container">
+              <img
+                id="rhombus-image"
+                src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.collegedunia.com%2Fpublic%2Fimage%2FI2_3755abc9381546c34010d5ea0ec66a9f.jpeg&f=1&nofb=1&ipt=f6297395c21e77b0ed1a0ef6a9837775fbf07b044e16271b7632f0dc887847fe&ipo=images"
+              />
+            </div>
+
+            <div id="diagonals-input" class="input-group">
+              <label for="d1">Диагональ d1:</label>
+              <input type="number" id="d1" step="any" min="0" />
+              <div id="d1-error" class="error">
+                Пожалуйста, введите положительное число
+              </div>
+
+              <label for="d2">Диагональ d2:</label>
+              <input type="number" id="d2" step="any" min="0" />
+              <div id="d2-error" class="error">
+                Пожалуйста, введите положительное число
+              </div>
+            </div>
+
+            <div
+              id="side-angle-input"
+              class="input-group"
+              style="display: none"
+            >
+              <label for="side">Сторона a:</label>
+              <input type="number" id="side" step="any" min="0" />
+              <div id="side-error" class="error">
+                Пожалуйста, введите положительное число
+              </div>
+
+              <label for="angle">Угол α (в градусах):</label>
+              <input type="number" id="angle" step="any" min="0" max="180" />
+              <div id="angle-error" class="error">
+                Пожалуйста, введите угол между 0 и 180 градусами
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label>Вычисляемые характеристики:</label>
+              <div class="checkbox-group">
+                <div class="checkbox-option">
+                  <input
+                    type="checkbox"
+                    id="height-checkbox"
+                    name="calculate-options"
+                    value="height"
+                    checked
+                  />
+                  <label for="height-checkbox">Высоты</label>
+                </div>
+                <div class="checkbox-option">
+                  <input
+                    type="checkbox"
+                    id="perimeter-checkbox"
+                    name="calculate-options"
+                    value="perimeter"
+                    checked
+                  />
+                  <label for="perimeter-checkbox">Периметр</label>
+                </div>
+                <div class="checkbox-option">
+                  <input
+                    type="checkbox"
+                    id="inradius-checkbox"
+                    name="calculate-options"
+                    value="inradius"
+                    checked
+                  />
+                  <label for="inradius-checkbox"
+                    >Радиус вписанной окружности</label
+                  >
+                </div>
+                <div class="checkbox-option">
+                  <input
+                    type="checkbox"
+                    id="area-checkbox"
+                    name="calculate-options"
+                    value="area"
+                    checked
+                  />
+                  <label for="area-checkbox">Площадь</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="buttons">
+            <button id="calculate-btn">Вычислить</button>
+            <button id="clear-btn">Очистить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const showBtn = document.getElementById("show-btn");
+        const diagonalsInput = document.getElementById("diagonals-input");
+        const sideAngleInput = document.getElementById("side-angle-input");
+        const rhombusImage = document.getElementById("rhombus-image");
+        const calculateBtn = document.getElementById("calculate-btn");
+        const clearBtn = document.getElementById("clear-btn");
+        const resultsDiv = document.getElementById("results");
+
+        // Обработчик кнопки "Показать"
+        showBtn.addEventListener("click", function () {
+          const selectedType = document.querySelector(
+            'input[name="input-type"]:checked',
+          ).value;
+
+          if (selectedType === "diagonals") {
+            diagonalsInput.style.display = "block";
+            sideAngleInput.style.display = "none";
+            rhombusImage.src =
+              "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.collegedunia.com%2Fpublic%2Fimage%2FI2_3755abc9381546c34010d5ea0ec66a9f.jpeg&f=1&nofb=1&ipt=f6297395c21e77b0ed1a0ef6a9837775fbf07b044e16271b7632f0dc887847fe&ipo=images";
+          } else {
+            diagonalsInput.style.display = "none";
+            sideAngleInput.style.display = "block";
+            rhombusImage.src =
+              "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.collegedunia.com%2Fpublic%2Fimage%2FI2_3755abc9381546c34010d5ea0ec66a9f.jpeg&f=1&nofb=1&ipt=f6297395c21e77b0ed1a0ef6a9837775fbf07b044e16271b7632f0dc887847fe&ipo=images";
+          }
+        });
+
+        // Обработчик кнопки "Вычислить"
+        calculateBtn.addEventListener("click", function () {
+          const selectedType = document.querySelector(
+            'input[name="input-type"]:checked',
+          ).value;
+          let isValid = true;
+
+          // Проверка ввода для диагоналей
+          if (selectedType === "diagonals") {
+            const d1 = parseFloat(document.getElementById("d1").value);
+            const d2 = parseFloat(document.getElementById("d2").value);
+
+            if (isNaN(d1) || d1 <= 0) {
+              document.getElementById("d1").classList.add("error-input");
+              document.getElementById("d1-error").style.display = "block";
+              isValid = false;
+            } else {
+              document.getElementById("d1").classList.remove("error-input");
+              document.getElementById("d1-error").style.display = "none";
+            }
+
+            if (isNaN(d2) || d2 <= 0) {
+              document.getElementById("d2").classList.add("error-input");
+              document.getElementById("d2-error").style.display = "block";
+              isValid = false;
+            } else {
+              document.getElementById("d2").classList.remove("error-input");
+              document.getElementById("d2-error").style.display = "none";
+            }
+
+            if (isValid) {
+              calculateFromDiagonals(d1, d2);
+            }
+          }
+          // Проверка ввода для стороны и угла
+          else {
+            const side = parseFloat(document.getElementById("side").value);
+            const angle = parseFloat(document.getElementById("angle").value);
+
+            if (isNaN(side) || side <= 0) {
+              document.getElementById("side").classList.add("error-input");
+              document.getElementById("side-error").style.display = "block";
+              isValid = false;
+            } else {
+              document.getElementById("side").classList.remove("error-input");
+              document.getElementById("side-error").style.display = "none";
+            }
+
+            if (isNaN(angle) || angle <= 0 || angle >= 180) {
+              document.getElementById("angle").classList.add("error-input");
+              document.getElementById("angle-error").style.display = "block";
+              isValid = false;
+            } else {
+              document.getElementById("angle").classList.remove("error-input");
+              document.getElementById("angle-error").style.display = "none";
+            }
+
+            if (isValid) {
+              calculateFromSideAngle(side, angle);
+            }
+          }
+        });
+
+        // Обработчик кнопки "Очистить"
+        clearBtn.addEventListener("click", function () {
+          document.getElementById("d1").value = "";
+          document.getElementById("d2").value = "";
+          document.getElementById("side").value = "";
+          document.getElementById("angle").value = "";
+
+          // Убираем подсветку ошибок
+          document.getElementById("d1").classList.remove("error-input");
+          document.getElementById("d2").classList.remove("error-input");
+          document.getElementById("side").classList.remove("error-input");
+          document.getElementById("angle").classList.remove("error-input");
+
+          document.getElementById("d1-error").style.display = "none";
+          document.getElementById("d2-error").style.display = "none";
+          document.getElementById("side-error").style.display = "none";
+          document.getElementById("angle-error").style.display = "none";
+
+          resultsDiv.innerHTML =
+            "<p>Здесь будут отображаться результаты вычислений</p>";
+        });
+
+        // Функция вычисления характеристик из диагоналей
+        function calculateFromDiagonals(d1, d2) {
+          const options = getSelectedOptions();
+          const results = {};
+
+          // Вычисляем площадь
+          if (options.includes("area")) {
+            results.area = (d1 * d2) / 2;
+          }
+
+          // Вычисляем сторону
+          const side = Math.sqrt(Math.pow(d1 / 2, 2) + Math.pow(d2 / 2, 2));
+
+          // Вычисляем периметр
+          if (options.includes("perimeter")) {
+            results.perimeter = 4 * side;
+          }
+
+          // Вычисляем высоты
+          if (options.includes("height")) {
+            // Высота через площадь и сторону
+            const area = (d1 * d2) / 2;
+            results.height = area / side;
+          }
+
+          // Вычисляем радиус вписанной окружности
+          if (options.includes("inradius")) {
+            // Радиус = площадь / полупериметр
+            const area = (d1 * d2) / 2;
+            const perimeter = 4 * side;
+            results.inradius = area / (perimeter / 2);
+          }
+
+          displayResults(results);
+        }
+
+        // Функция вычисления характеристик из стороны и угла
+        function calculateFromSideAngle(side, angle) {
+          const options = getSelectedOptions();
+          const results = {};
+          const angleRad = (angle * Math.PI) / 180;
+
+          // Вычисляем площадь
+          if (options.includes("area")) {
+            results.area = Math.pow(side, 2) * Math.sin(angleRad);
+          }
+
+          // Вычисляем периметр
+          if (options.includes("perimeter")) {
+            results.perimeter = 4 * side;
+          }
+
+          // Вычисляем высоты
+          if (options.includes("height")) {
+            results.height = side * Math.sin(angleRad);
+          }
+
+          // Вычисляем радиус вписанной окружности
+          if (options.includes("inradius")) {
+            // Радиус = (a * sinα) / 2
+            results.inradius = (side * Math.sin(angleRad)) / 2;
+          }
+
+          displayResults(results);
+        }
+
+        // Получение выбранных опций для вычисления
+        function getSelectedOptions() {
+          const checkboxes = document.querySelectorAll(
+            'input[name="calculate-options"]:checked',
+          );
+          const selectedOptions = [];
+
+          checkboxes.forEach((checkbox) => {
+            selectedOptions.push(checkbox.value);
+          });
+
+          return selectedOptions;
+        }
+
+        // Отображение результатов
+        function displayResults(results) {
+          let html = "";
+
+          if (results.area !== undefined) {
+            html += `
+              <div class="result-item">
+                <div class="result-title">Площадь:</div>
+                <div>${results.area.toFixed(4)}</div>
+              </div>`;
+          }
+
+          if (results.perimeter !== undefined) {
+            html += `
+              <div class="result-item">
+                <div class="result-title">Периметр:</div>
+                <div>${results.perimeter.toFixed(4)}</div>
+              </div>`;
+          }
+
+          if (results.height !== undefined) {
+            html += `
+              <div class="result-item">
+                <div class="result-title">Высота:</div>
+                <div>${results.height.toFixed(4)}</div>
+              </div>`;
+          }
+
+          if (results.inradius !== undefined) {
+            html += `
+              <div class="result-item">
+                <div class="result-title">Радиус вписанной окружности:</div>
+                <div>${results.inradius.toFixed(4)}</div>
+              </div>`;
+          }
+
+          if (html === "") {
+            html = "<p>Выберите хотя бы одну характеристику для вычисления</p>";
+          }
+
+          resultsDiv.innerHTML = html;
+        }
+      });
+    </script>
+  </body>
+</html>

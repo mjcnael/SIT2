@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Удаление столбца</title>
+  </head>
+  <style>
+    body {
+      font-family: Source Code Pro;
+    }
+  </style>
+  <body>
+    <h3>Топ браузеров</h3>
+    <table id="test" border="1">
+      <tr>
+        <th>Браузеры</th>
+        <th>Доля рынка</th>
+        <th>63.33%</th>
+      </tr>
+      <tr>
+        <td>Google Chrome</td>
+        <td>63.33%</td>
+        <td>63.33%</td>
+      </tr>
+      <tr>
+        <td>Apple Safari</td>
+        <td>13.13%</td>
+        <td>63.33%</td>
+      </tr>
+      <tr>
+        <td>Microsoft Edge</td>
+        <td>10.46%</td>
+        <td>63.33%</td>
+      </tr>
+      <tr>
+        <td>Mozilla Firefox</td>
+        <td>5.96%</td>
+        <td>63.33%</td>
+      </tr>
+    </table>
+
+    <br />
+
+    <button onclick="changeTable('test', 1)">Удалить 2-й столбец</button>
+
+    <script>
+      function changeTable(tableId, columnIndex) {
+        let table = document.getElementById(tableId);
+
+        if (!table) return;
+
+        for (let row of table.rows) {
+          if (row.cells.length > columnIndex) {
+            row.deleteCell(columnIndex);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
