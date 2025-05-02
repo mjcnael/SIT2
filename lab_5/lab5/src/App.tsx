@@ -6,7 +6,7 @@ const App = () => {
   return (
     <div className="App">
       <h3>Самые высокие здания и сооружения</h3>
-      <Table data={buildings} amountRows="10" />
+      <Table data={buildings} amountRows={15} />
     </div>
   );
 };
